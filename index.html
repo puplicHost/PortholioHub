@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PortfolioHub — Build a professional portfolio website for individuals, companies, and creatives.">
+  <title>PortfolioHub — Raise Your Standards</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Six+Caps&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #0066cc;
+      --accent-focus: #0071e3;
+      --accent-on-dark: #2997ff;
+      --ink: #1d1d1f;
+      --ink-muted: #7a7a7a;
+      --canvas: #ffffff;
+      --canvas-alt: #f5f5f7;
+      --tile-1: #272729;
+      --tile-2: #2a2a2c;
+      --hairline: #e0e0e0;
+      --divider: #f0f0f0;
+      --on-dark: #ffffff;
+      --on-primary: #ffffff;
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 32px;
+      --space-xl: 48px;
+      --space-2xl: 64px;
+      --space-3xl: 80px;
+      --space-4xl: 100px;
+      --space-5xl: 140px;
+      --space-6xl: 180px;
+      --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Six Caps', sans-serif;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 0; }
+    body {
+      font-family: var(--font-primary);
+      background: var(--canvas);
+      color: var(--ink);
+      line-height: 1.47;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; height: auto; display: block; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+    .container {
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 var(--space-xl);
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--canvas-alt); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+    /* ===== Header ===== */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: var(--space-sm) 0;
+      transition: background 0.4s;
+    }
+    header.scrolled { background: rgba(255,255,255,0.88); backdrop-filter: blur(20px); border-bottom: 1px solid var(--divider); }
+    .header-inner { display: flex; align-items: center; justify-content: space-between; }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .logo img { display: block; width: 34px; height: 34px; border-radius: 50%; object-fit: cover; }
+    .header-nav { display: flex; align-items: center; gap: var(--space-md); }
+    .header-nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      transition: color 0.3s;
+      letter-spacing: -0.01em;
+    }
+    .header-nav a:hover { color: var(--accent); }
+    /* ===== Hero (light tile) ===== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: var(--space-6xl) var(--space-xl) var(--space-3xl);
+      background: var(--canvas);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+    .hero-bg span {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      will-change: transform;
+    }
+    .hero-bg .orb-1 {
+      width: 500px; height: 500px;
+      background: var(--accent);
+      top: -15%; left: -8%;
+      animation: floatOrb 25s ease-in-out infinite;
+    }
+    .hero-bg .orb-2 {
+      width: 400px; height: 400px;
+      background: #4a9eff;
+      bottom: -12%; right: -6%;
+      animation: floatOrb 30s ease-in-out infinite reverse;
+    }
+    .hero-bg .orb-3 {
+      width: 300px; height: 300px;
+      background: var(--accent);
+      top: 40%; right: 20%;
+      animation: floatOrb 20s ease-in-out infinite 5s;
+      opacity: 0.08;
+    }
+    @keyframes floatOrb {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25% { transform: translate(40px, -60px) scale(1.08); }
+      50% { transform: translate(-20px, 30px) scale(0.95); }
+      75% { transform: translate(50px, 40px) scale(1.05); }
+    }
+    .hero-content { width: 100%; max-width: 1320px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-tag {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--accent);
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+    .hero-title {
+      font-size: clamp(48px, 9vw, 120px);
+      font-weight: 600;
+      line-height: 1.07;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      max-width: 90%;
+    }
+    .hero-title .indent {
+      display: block;
+      padding-right: clamp(80px, 15vw, 400px);
+      color: var(--accent);
+    }
+    .hero-subtitle {
+      font-size: clamp(14px, 1.2vw, 20px);
+      font-weight: 400;
+      color: var(--ink-muted);
+      letter-spacing: 0;
+      max-width: 35%;
+      margin-top: var(--space-lg);
+      line-height: 1.47;
+    }
+    .hero-social {
+      display: flex;
+      gap: var(--space-sm);
+      margin-top: var(--space-xl);
+    }
+    .hero-social a {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--hairline);
+      color: var(--ink-muted);
+      border-radius: 50%;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .hero-social a:hover {
+      background: var(--accent);
+      color: var(--on-primary);
+      border-color: var(--accent);
+    }
+    .hero-scroll {
+      position: absolute;
+      bottom: var(--space-lg);
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      letter-spacing: -0.01em;
+      color: var(--ink-muted);
+      opacity: 0.4;
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.4; transform: translateX(-50%) translateY(0); }
+      50% { opacity: 0.8; transform: translateX(-50%) translateY(4px); }
+    }
+    /* ===== Sections ===== */
+    section { padding: var(--space-3xl) 0; }
+    .section-inner { width: 100%; max-width: 1320px; margin: 0 auto; padding: 0 var(--space-xl); }
+    .section-number {
+      font-family: var(--font-display);
+      font-size: clamp(36px, 4vw, 64px);
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: var(--space-sm);
+      letter-spacing: 0.02em;
+    }
+    .section-label {
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--accent);
+      margin-bottom: var(--space-xs);
+    }
+    .section-title {
+      font-size: clamp(28px, 4vw, 52px);
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: var(--space-lg);
+    }
+    .section-title-wide { max-width: 60%; }
+    /* Light section variant */
+    .section-light { background: var(--canvas); }
+    /* ===== Services ===== */
+    .services-intro {
+      max-width: 45%;
+      font-size: clamp(14px, 1.2vw, 18px);
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin-bottom: var(--space-3xl);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+    .service-card {
+      background: var(--canvas-alt);
+      border-radius: 18px;
+      padding: var(--space-xl);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s, background 0.3s;
+    }
+    .service-card:hover { transform: translateY(-4px); background: #f0f0f2; }
+    .service-card:active { transform: scale(0.98); }
+    .service-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: var(--space-sm);
+    }
+    .service-card > p {
+      font-size: 14px;
+      color: var(--ink-muted);
+      line-height: 1.6;
+      margin-bottom: var(--space-lg);
+    }
+    .service-features {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-xs);
+      margin-top: auto;
+    }
+    .service-features li {
+      font-size: 12px;
+      color: var(--ink-muted);
+      background: var(--canvas);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      letter-spacing: -0.01em;
+    }
+    /* Dark section variant */
+    .section-dark {
+      background: var(--tile-1);
+      color: var(--on-dark);
+    }
+    .section-dark .section-title { color: var(--on-dark); }
+    .section-dark .section-number { color: var(--accent-on-dark); }
+    .section-dark .section-label { color: var(--accent-on-dark); }
+    .section-dark .section-title-wide { color: var(--on-dark); }
+    .section-dark .filter-btn { color: rgba(255,255,255,0.5); }
+    .section-dark .filter-btn:hover { color: rgba(255,255,255,0.8); }
+    .section-dark .filter-btn.active { color: var(--accent-on-dark); }
+    /* ===== Why Work With Us ===== */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+    .benefit-card {
+      background: var(--tile-2);
+      border-radius: 18px;
+      padding: var(--space-xl);
+      transition: transform 0.3s, background 0.3s;
+    }
+    .benefit-card:hover { transform: translateY(-4px); background: #323234; }
+    .benefit-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(41,151,255,0.12);
+      color: var(--accent-on-dark);
+      margin-bottom: var(--space-md);
+    }
+    .benefit-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--on-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-xs);
+    }
+    .benefit-card p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.5);
+      line-height: 1.6;
+    }
+    /* ===== Projects (dark tile section) ===== */
+    .filter-bar {
+      display: flex;
+      gap: var(--space-lg);
+      margin-bottom: var(--space-xl);
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      background: none;
+      border: none;
+      font-family: var(--font-primary);
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--ink-muted);
+      cursor: pointer;
+      padding: 6px 0;
+      transition: color 0.3s;
+      min-height: 44px;
+    }
+    .filter-btn:hover { color: var(--ink); }
+    .filter-btn.active { color: var(--accent); }
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-md);
+    }
+    .project-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--tile-2);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 18px;
+    }
+    .project-card .project-bg {
+      position: absolute;
+      inset: 0;
+      transition: transform 0.6s;
+      border-radius: 18px;
+    }
+    .project-card:hover .project-bg { transform: scale(1.06); }
+    .project-card .project-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      opacity: 0;
+      transition: opacity 0.4s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-lg);
+      text-align: center;
+      border-radius: 18px;
+    }
+    .project-card:hover .project-overlay { opacity: 1; }
+    .project-overlay h4 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--on-dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+    .project-overlay p {
+      font-size: 14px;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.6);
+    }
+    .project-tag {
+      position: absolute;
+      bottom: var(--space-sm);
+      left: var(--space-sm);
+      font-size: 12px;
+      letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.3);
+      z-index: 1;
+    }
+    /* ===== Footer ===== */
+    footer {
+      background: var(--canvas-alt);
+      border-top: 1px solid var(--divider);
+      padding: var(--space-2xl) 0;
+    }
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+      color: var(--ink-muted);
+    }
+    .footer-inner a { color: var(--ink-muted); transition: color 0.3s; }
+    .footer-inner a:hover { color: var(--accent); }
+    #back-top {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      letter-spacing: -0.01em;
+      font-family: var(--font-primary);
+      color: var(--ink-muted);
+      transition: color 0.3s;
+      min-height: 44px;
+      padding: 0 8px;
+    }
+    #back-top:hover { color: var(--accent); }
+    /* ===== Reveal ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s, transform 0.7s;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    /* ===== Responsive ===== */
+    @media (max-width: 1024px) {
+      .container { padding: 0 var(--space-lg); }
+      .section-inner { padding: 0 var(--space-lg); }
+      .hero-title .indent { padding-right: 80px; }
+      .hero-subtitle { max-width: 50%; }
+    }
+    @media (max-width: 767px) {
+      .container { padding: 0 var(--space-md); }
+      .section-inner { padding: 0 var(--space-md); }
+      .hero { padding: var(--space-5xl) var(--space-md) var(--space-2xl); }
+      .hero-title { font-size: 36px; }
+      .hero-title .indent { padding-right: 40px; }
+      .hero-subtitle { max-width: 80%; font-size: 14px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .services-intro { max-width: 80%; }
+      .benefits-grid { grid-template-columns: 1fr 1fr; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .section-title-wide { max-width: 100%; }
+    }
+    /* ===== Floating WhatsApp ===== */
+    .whatsapp-float {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 56px;
+      height: 56px;
+      background: var(--accent);
+      color: var(--on-primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 99;
+      transition: transform 0.2s, background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .whatsapp-float:hover { background: var(--accent-focus); transform: scale(1.05); }
+    .whatsapp-float:active { transform: scale(0.95); }
+    @media (max-width: 479px) {
+      .whatsapp-float { bottom: 80px; right: 16px; width: 50px; height: 50px; }
+    }
+    /* ===== Mobile Bottom Nav ===== */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      padding-bottom: env(safe-area-inset-bottom, 0);
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--hairline);
+      z-index: 100;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      font-size: 10px;
+      letter-spacing: -0.01em;
+      color: var(--ink-muted);
+      transition: color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      padding: 4px 16px;
+      min-height: 44px;
+      justify-content: center;
+    }
+    .mobile-nav-item.active { color: var(--accent); }
+    .mobile-nav-item:active { opacity: 0.6; }
+    @media (max-width: 479px) {
+      body { padding-bottom: 64px; }
+      .container { padding: 0 var(--space-md); }
+      .section-inner { padding: 0 var(--space-md); }
+      .mobile-bottom-nav { display: flex; }
+      .header-inner { padding-top: max(var(--space-sm), env(safe-area-inset-top, 0)); }
+      .hero {
+        min-height: auto;
+        padding: 60px var(--space-md) 32px;
+      }
+      .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+      .hero-tag { font-size: 12px; margin-bottom: var(--space-sm); }
+      .hero-title {
+        font-size: 32px;
+        max-width: 100%;
+        text-align: center;
+      }
+      .hero-title .indent {
+        padding-right: 0;
+        display: inline;
+        color: var(--accent);
+      }
+      .hero-subtitle {
+        max-width: 100%;
+        font-size: 15px;
+        text-align: center;
+        margin-top: var(--space-md);
+        line-height: 1.6;
+      }
+      .hero-social { justify-content: center; margin-top: var(--space-lg); }
+      .hero-social a {
+        width: 48px;
+        height: 48px;
+      }
+      .hero-social a:active {
+        background: var(--accent);
+        color: var(--on-primary);
+        border-color: var(--accent);
+      }
+      .hero-scroll { display: none; }
+      .section-number { font-size: 48px; }
+      .section-title { font-size: 22px; }
+      .section-title-wide { max-width: 100%; }
+      .services-intro { max-width: 100%; }
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card { padding: var(--space-lg); }
+      .filter-bar {
+        gap: var(--space-xs);
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
+      }
+      .filter-bar::-webkit-scrollbar { display: none; }
+      .filter-btn {
+        white-space: nowrap;
+        padding: 8px 20px;
+        font-size: 13px;
+        flex-shrink: 0;
+      }
+      .projects-grid { grid-template-columns: 1fr; gap: var(--space-md); }
+      .project-card {
+        border-radius: 14px;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .project-card:active { transform: scale(0.98); }
+      .project-overlay h4 { font-size: 16px; }
+      .project-overlay p { font-size: 12px; }
+      .project-tag { font-size: 9px; padding: 3px 10px; top: 10px; right: 10px; }
+      .benefits-grid { grid-template-columns: 1fr; }
+      .benefit-card { padding: var(--space-lg); }
+      .footer-inner { flex-direction: row; padding-top: var(--space-md); padding-bottom: max(var(--space-md), env(safe-area-inset-bottom, 0)); }
+      .section-dark { padding: var(--space-3xl) 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== Header ===== -->
+  <header id="header" role="banner">
+    <div class="container header-inner">
+      <a href="#home" class="logo">
+        PortfolioHub
+        <img src="logo.png" alt="" width="34" height="34">
+      </a>
+      <nav class="header-nav">
+        <a href="#services">Services</a>
+        <a href="#why-us">Why Us</a>
+        <a href="#portfolio">Portfolio</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <!-- ===== Hero (light) ===== -->
+    <section id="home" class="hero" aria-label="Hero">
+      <div class="hero-bg" aria-hidden="true">
+        <span class="orb-1"></span>
+        <span class="orb-2"></span>
+        <span class="orb-3"></span>
+      </div>
+      <div class="hero-content">
+        <span class="hero-tag reveal">PortfolioHub</span>
+        <h1 class="hero-title reveal">
+          Build Your<br>Portfolio.
+          <span class="indent">Raise Your Standards</span>
+        </h1>
+        <p class="hero-subtitle reveal">
+          A professional portfolio platform for individuals, companies, and creatives — designed to impress in minutes.
+        </p>
+        <div class="hero-social reveal">
+          <a href="https://www.facebook.com/profile.php?id=61591188372137" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="https://wa.me/201223789179" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          </a>
+          <a href="https://www.linkedin.com/company/portfoliohubb/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="hero-scroll">Scroll to explore</div>
+    </section>
+
+    <!-- ===== Services ===== -->
+    <section id="services" class="section-light" aria-labelledby="services-title">
+      <div class="section-inner">
+        <div class="reveal">
+          <span class="section-number">01</span>
+          <span class="section-label">What I Do</span>
+          <h2 id="services-title" class="section-title">What I Can Build for You</h2>
+          <p class="services-intro">From personal portfolios to full-scale online stores, I deliver modern web solutions tailored to your goals.</p>
+        </div>
+        <div class="services-grid">
+          <div class="service-card reveal">
+            <h3>Portfolio Websites</h3>
+            <p>Professional portfolio websites designed to showcase your skills, experience, and projects with a modern and responsive user experience.</p>
+            <ul class="service-features">
+              <li>Modern UI Design</li>
+              <li>Responsive Layout</li>
+              <li>Fast Performance</li>
+              <li>SEO-Friendly Structure</li>
+              <li>Smooth Animations</li>
+            </ul>
+          </div>
+          <div class="service-card reveal">
+            <h3>Company Websites</h3>
+            <p>Professional business websites that help companies establish a strong online presence and present their services effectively.</p>
+            <ul class="service-features">
+              <li>Corporate Websites</li>
+              <li>Service Pages</li>
+              <li>Contact Forms</li>
+              <li>Responsive Design</li>
+              <li>Performance Optimization</li>
+            </ul>
+          </div>
+          <div class="service-card reveal">
+            <h3>E-Commerce Stores</h3>
+            <p>Modern online stores designed to deliver seamless shopping experiences and maximize conversions.</p>
+            <ul class="service-features">
+              <li>Product Catalogs</li>
+              <li>Landing Pages</li>
+              <li>Mobile-Friendly Design</li>
+              <li>Fast Loading Speed</li>
+              <li>Store Support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Why Work With Us (dark tile) ===== -->
+    <section id="why-us" class="section-dark" aria-labelledby="why-us-title">
+      <div class="section-inner">
+        <div class="reveal">
+          <span class="section-number">02</span>
+          <span class="section-label">Why Us</span>
+          <h2 id="why-us-title" class="section-title">Why Work With Us</h2>
+        </div>
+        <div class="benefits-grid">
+          <div class="benefit-card reveal">
+            <div class="benefit-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3>Modern Design</h3>
+            <p>Clean, Apple-inspired interfaces that leave a lasting impression and elevate your brand identity.</p>
+          </div>
+          <div class="benefit-card reveal">
+            <div class="benefit-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/></svg>
+            </div>
+            <h3>Fully Responsive</h3>
+            <p>Pixel-perfect across every device — from desktop to tablet to mobile, your site looks flawless everywhere.</p>
+          </div>
+          <div class="benefit-card reveal">
+            <div class="benefit-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+            </div>
+            <h3>SEO Optimized</h3>
+            <p>Built with best practices to rank higher on search engines and get found by the right audience.</p>
+          </div>
+          <div class="benefit-card reveal">
+            <div class="benefit-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <h3>Fast Delivery</h3>
+            <p>Efficient workflow and clear communication means your project ships on time, every time.</p>
+          </div>
+          <div class="benefit-card reveal">
+            <div class="benefit-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>24/7 Support</h3>
+            <p>We're always here to help with questions, updates, or anything you need post-launch.</p>
+          </div>
+          <div class="benefit-card reveal">
+            <div class="benefit-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M12 14v4"/><path d="M8 22h8"/></svg>
+            </div>
+            <h3>Affordable Plans</h3>
+            <p>High-quality web development at fair prices — no hidden fees, no overblown quotes.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Portfolio (dark tile) ===== -->
+    <section id="portfolio" class="section-dark" aria-labelledby="portfolio-title">
+      <div class="section-inner">
+        <div class="reveal">
+          <span class="section-number">03</span>
+          <span class="section-label">Our Work</span>
+          <h2 id="portfolio-title" class="section-title section-title-wide">Projects That Speak for Themselves</h2>
+        </div>
+        <div class="filter-bar reveal" role="tablist" aria-label="Filter projects">
+          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">All</button>
+          <button class="filter-btn" data-filter="personal" role="tab" aria-selected="false">Personal</button>
+          <button class="filter-btn" data-filter="corporate" role="tab" aria-selected="false">Corporate</button>
+        </div>
+        <div class="projects-grid" id="projectsGrid">
+          <a href="https://puplichost.github.io/Aliya-Abdelaziz/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="personal">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/1.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Aliya Abdelaziz</h4>
+              <p>Portfolio Website</p>
+            </div>
+            <span class="project-tag">Personal</span>
+          </a>
+          <a href="https://puplichost.github.io/Kholud-Mohammad/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="personal">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/2.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Kholud Mohammad</h4>
+              <p>Portfolio Website</p>
+            </div>
+            <span class="project-tag">Personal</span>
+          </a>
+          <a href="https://puplichost.github.io/Nermin-Saeed-/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="personal">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/3.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Nermin Saeed</h4>
+              <p>Portfolio Website</p>
+            </div>
+            <span class="project-tag">Personal</span>
+          </a>
+          <a href="https://puplichost.github.io/omnia-Abess/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="personal">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/4.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Omnia Abess</h4>
+              <p>Portfolio Website</p>
+            </div>
+            <span class="project-tag">Personal</span>
+          </a>
+          <a href="https://puplichost.github.io/Heba-Taha/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="personal">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/5.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Heba Taha</h4>
+              <p>Portfolio Website</p>
+            </div>
+            <span class="project-tag">Personal</span>
+          </a>
+          <a href="https://puplichost.github.io/Marwa-Abdelaziz/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="personal">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/6.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Marwa Abdelaziz</h4>
+              <p>Portfolio Website</p>
+            </div>
+            <span class="project-tag">Personal</span>
+          </a>
+          <a href="https://puplichost.github.io/Amira-Ashraf/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="personal">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/7.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Amira Ashraf</h4>
+              <p>Portfolio Website</p>
+            </div>
+            <span class="project-tag">Personal</span>
+          </a>
+          <a href="https://brandollaagency.com/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="corporate">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/8.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Brandolla Agency</h4>
+              <p>Digital Agency</p>
+            </div>
+            <span class="project-tag">Corporate</span>
+          </a>
+          <a href="https://puplichost.github.io/ESRAA-ADEL-/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="personal">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/9.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Esraa Adel</h4>
+              <p>Portfolio Website</p>
+            </div>
+            <span class="project-tag">Personal</span>
+          </a>
+          <a href="https://puplichost.github.io/Bassmla-Mohmed/" target="_blank" rel="noopener noreferrer" class="project-card reveal" data-category="personal">
+            <div class="project-bg" style="background: #2a2a2c; background-image: url('portfolios/10.png'); background-size: cover; background-position: center;"></div>
+            <div class="project-overlay">
+              <h4>Basmala Mohmed</h4>
+              <p>Portfolio Website</p>
+            </div>
+            <span class="project-tag">Personal</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== Floating WhatsApp ===== -->
+  <a href="https://wa.me/201223789179" target="_blank" rel="noopener noreferrer" class="whatsapp-float" aria-label="WhatsApp">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+  </a>
+
+  <!-- ===== Mobile Bottom Nav ===== -->
+  <nav class="mobile-bottom-nav" aria-label="Main navigation">
+    <a href="#home" class="mobile-nav-item active">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+      <span>Home</span>
+    </a>
+    <a href="#services" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><circle cx="12" cy="8" r="0.5" fill="currentColor"/></svg>
+      <span>Services</span>
+    </a>
+    <a href="#why-us" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span>Why Us</span>
+    </a>
+    <a href="#portfolio" class="mobile-nav-item">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+      <span>Portfolio</span>
+    </a>
+  </nav>
+
+  <!-- ===== Footer ===== -->
+  <footer role="contentinfo">
+    <div class="container footer-inner">
+      <span>&copy; 2026 PortfolioHub</span>
+      <button id="back-top" aria-label="Back to top">Back to top ↑</button>
+    </div>
+  </footer>
+  <script>
+    (function() {
+      'use strict';
+      /* ===== Header scroll ===== */
+      const header = document.getElementById('header');
+      window.addEventListener('scroll', () => {
+        header.classList.toggle('scrolled', window.scrollY > 40);
+      }, { passive: true });
+      /* ===== Back to top ===== */
+      document.getElementById('back-top').addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+      /* ===== Scroll Reveal ===== */
+      const revealEls = document.querySelectorAll('.reveal');
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+      revealEls.forEach(el => revealObserver.observe(el));
+      /* ===== Mobile Bottom Nav ===== */
+      const navItems = document.querySelectorAll('.mobile-nav-item');
+      navItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+          navItems.forEach(n => n.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+      window.addEventListener('scroll', () => {
+        const sections = ['home', 'services', 'why-us', 'portfolio'];
+        let current = 'home';
+        sections.forEach(id => {
+          const el = document.getElementById(id);
+          if (el && el.getBoundingClientRect().top <= window.innerHeight * 0.5) current = id;
+        });
+        navItems.forEach(n => {
+          n.classList.toggle('active', n.getAttribute('href') === '#' + current);
+        });
+      }, { passive: true });
+      /* ===== Project Filter ===== */
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const projectCards = document.querySelectorAll('.project-card');
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          filterBtns.forEach(b => {
+            b.classList.remove('active');
+            b.setAttribute('aria-selected', 'false');
+          });
+          this.classList.add('active');
+          this.setAttribute('aria-selected', 'true');
+          const filter = this.dataset.filter;
+          projectCards.forEach(card => {
+            if (filter === 'all' || card.dataset.category === filter) {
+              card.style.display = 'flex';
+              card.style.opacity = '0';
+              requestAnimationFrame(() => { card.style.opacity = '1'; });
+            } else {
+              card.style.display = 'none';
+            }
+          });
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
