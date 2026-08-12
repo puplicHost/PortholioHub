@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PortfolioHub — Projects Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Six+Caps&display=swap" rel="stylesheet">
+  <script>
+    (function() {
+      var saved = localStorage.getItem('theme');
+      var dark = saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+    })();
+  </script>
+  <style>
+    :root {
+      --accent: #0066cc;
+      --accent-focus: #0071e3;
+      --accent-on-dark: #2997ff;
+      --ink: #1d1d1f;
+      --ink-muted: #7a7a7a;
+      --canvas: #ffffff;
+      --canvas-alt: #f5f5f7;
+      --tile-1: #272729;
+      --tile-2: #2a2a2c;
+      --hairline: #e0e0e0;
+      --divider: #f0f0f0;
+      --on-dark: #ffffff;
+      --on-primary: #ffffff;
+      --glass: rgba(255,255,255,0.88);
+      --card-hover: #f0f0f2;
+      --tile-hover: #323234;
+      --danger: #ff3b30;
+      --danger-bg: rgba(255,59,48,0.1);
+      --success: #30d158;
+      --success-bg: rgba(48,209,88,0.1);
+      --font-primary: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-display: 'Six Caps', sans-serif;
+    }
+    html[data-theme="dark"] {
+      --accent: #2997ff;
+      --accent-focus: #4aa3ff;
+      --ink: #f5f5f7;
+      --ink-muted: #a1a1a6;
+      --canvas: #0e0e10;
+      --canvas-alt: #1a1a1d;
+      --tile-1: #141417;
+      --tile-2: #1e1e21;
+      --hairline: #3a3a3c;
+      --divider: #2a2a2c;
+      --glass: rgba(22,22,24,0.88);
+      --card-hover: #232326;
+      --tile-hover: #28282b;
+    }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-primary);
+      background: var(--canvas-alt);
+      color: var(--ink);
+      line-height: 1.47;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    a { text-decoration: none; color: inherit; }
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ===== Scrollbar ===== */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--canvas-alt); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* ===== Layout ===== */
+    .layout { display: flex; min-height: 100vh; }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      width: 240px;
+      flex-shrink: 0;
+      background: var(--canvas);
+      border-right: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      z-index: 100;
+      padding: 28px 0;
+    }
+    .sidebar-logo {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      padding: 0 24px 28px;
+      border-bottom: 1px solid var(--hairline);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sidebar-logo span {
+      font-family: var(--font-display);
+      font-size: 26px;
+      color: var(--accent);
+      letter-spacing: 0.04em;
+    }
+    .sidebar-nav {
+      padding: 20px 12px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      border: none;
+      background: none;
+      font-family: var(--font-primary);
+      width: 100%;
+      text-align: left;
+    }
+    .nav-item:hover { background: var(--canvas-alt); color: var(--ink); }
+    .nav-item.active { background: rgba(0,102,204,0.1); color: var(--accent); }
+    html[data-theme="dark"] .nav-item.active { background: rgba(41,151,255,0.12); color: var(--accent); }
+    .nav-item svg { flex-shrink: 0; }
+    .sidebar-bottom {
+      padding: 12px;
+      border-top: 1px solid var(--hairline);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .theme-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      border: none;
+      background: none;
+      font-family: var(--font-primary);
+      width: 100%;
+      text-align: left;
+    }
+    .theme-btn:hover { background: var(--canvas-alt); color: var(--ink); }
+
+    /* ===== Main ===== */
+    .main {
+      margin-left: 240px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ===== Topbar ===== */
+    .topbar {
+      background: var(--canvas);
+      border-bottom: 1px solid var(--hairline);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .topbar-title {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+    /* ===== Content ===== */
+    .content { padding: 32px; flex: 1; }
+
+    /* ===== Stats ===== */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: var(--canvas);
+      border-radius: 16px;
+      padding: 20px 24px;
+      border: 1px solid var(--hairline);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .stat-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .stat-icon.blue { background: rgba(0,102,204,0.1); color: var(--accent); }
+    .stat-icon.green { background: var(--success-bg); color: var(--success); }
+    .stat-icon.orange { background: rgba(255,159,10,0.1); color: #ff9f0a; }
+    .stat-label { font-size: 13px; color: var(--ink-muted); font-weight: 400; margin-bottom: 4px; }
+    .stat-value { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); }
+
+    /* ===== Section header ===== */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .section-header h2 {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    /* ===== Primary Button ===== */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 10px 18px;
+      background: var(--accent);
+      color: var(--on-primary);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-primary);
+      transition: background 0.2s, transform 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .btn-primary:hover { background: var(--accent-focus); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 16px;
+      background: var(--canvas-alt);
+      color: var(--ink);
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid var(--hairline);
+      cursor: pointer;
+      font-family: var(--font-primary);
+      transition: background 0.2s;
+    }
+    .btn-secondary:hover { background: var(--card-hover); }
+
+    .btn-danger {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--danger-bg);
+      color: var(--danger);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-primary);
+      transition: background 0.2s;
+    }
+    .btn-danger:hover { background: rgba(255,59,48,0.18); }
+
+    .btn-edit {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: var(--canvas-alt);
+      color: var(--ink-muted);
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid var(--hairline);
+      cursor: pointer;
+      font-family: var(--font-primary);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-edit:hover { background: var(--card-hover); color: var(--ink); }
+
+    /* ===== Filter tabs ===== */
+    .filter-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--canvas-alt);
+      border-radius: 10px;
+      padding: 4px;
+      border: 1px solid var(--hairline);
+    }
+    .filter-tab {
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: var(--font-primary);
+      transition: background 0.2s, color 0.2s;
+    }
+    .filter-tab.active {
+      background: var(--canvas);
+      color: var(--ink);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    /* ===== Projects Grid ===== */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    /* ===== Project Card ===== */
+    .project-card {
+      background: var(--canvas);
+      border-radius: 16px;
+      border: 1px solid var(--hairline);
+      overflow: hidden;
+      transition: box-shadow 0.2s, transform 0.2s;
+    }
+    .project-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.08); transform: translateY(-2px); }
+    html[data-theme="dark"] .project-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.4); }
+    .card-image {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: var(--tile-2);
+      background-size: cover;
+      background-position: center;
+      position: relative;
+    }
+    .card-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+    }
+    .card-badge.personal { background: rgba(41,151,255,0.15); color: #2997ff; }
+    .card-badge.corporate { background: rgba(48,209,88,0.15); color: var(--success); }
+    .card-body { padding: 16px; }
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .card-desc { font-size: 13px; color: var(--ink-muted); margin-bottom: 12px; }
+    .card-url {
+      font-size: 12px;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .card-actions { display: flex; gap: 8px; }
+
+    /* ===== Empty state ===== */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 32px;
+      color: var(--ink-muted);
+    }
+    .empty-state svg { margin: 0 auto 16px; opacity: 0.3; }
+    .empty-state p { font-size: 15px; }
+
+    /* ===== Loading ===== */
+    .loading-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .skeleton {
+      background: var(--canvas);
+      border-radius: 16px;
+      border: 1px solid var(--hairline);
+      overflow: hidden;
+    }
+    .skeleton-img {
+      width: 100%;
+      aspect-ratio: 16/10;
+      background: linear-gradient(90deg, var(--canvas-alt) 25%, var(--hairline) 50%, var(--canvas-alt) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+    }
+    .skeleton-body { padding: 16px; }
+    .skeleton-line {
+      height: 12px;
+      border-radius: 6px;
+      background: linear-gradient(90deg, var(--canvas-alt) 25%, var(--hairline) 50%, var(--canvas-alt) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      margin-bottom: 8px;
+    }
+    .skeleton-line.short { width: 60%; }
+    @keyframes shimmer { to { background-position: -200% 0; } }
+
+    /* ===== Modal ===== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(8px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s;
+    }
+    .modal-backdrop.open { opacity: 1; visibility: visible; }
+    .modal {
+      background: var(--canvas);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 520px;
+      padding: 28px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.2);
+      transform: translateY(16px);
+      transition: transform 0.25s;
+    }
+    .modal-backdrop.open .modal { transform: translateY(0); }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: none;
+      background: var(--canvas-alt);
+      color: var(--ink-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .modal-close:hover { background: var(--card-hover); color: var(--ink); }
+
+    /* ===== Form ===== */
+    .form-group { margin-bottom: 16px; }
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      margin-bottom: 6px;
+    }
+    .form-input, .form-select {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1.5px solid var(--hairline);
+      background: var(--canvas-alt);
+      color: var(--ink);
+      font-size: 14px;
+      font-family: var(--font-primary);
+      transition: border-color 0.2s;
+      outline: none;
+    }
+    .form-input:focus, .form-select:focus { border-color: var(--accent); }
+    .form-input::placeholder { color: var(--ink-muted); opacity: 0.6; }
+    .form-select { cursor: pointer; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .form-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--hairline);
+    }
+
+    /* ===== Toast ===== */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .toast {
+      background: var(--tile-1);
+      color: var(--on-dark);
+      padding: 12px 18px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      animation: toastIn 0.3s ease;
+      max-width: 320px;
+    }
+    .toast.success svg { color: var(--success); }
+    .toast.error svg { color: var(--danger); }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(20px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    /* ===== Delete Confirm ===== */
+    .confirm-modal {
+      max-width: 380px;
+      text-align: center;
+    }
+    .confirm-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--danger-bg);
+      color: var(--danger);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    .confirm-title { font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+    .confirm-text { font-size: 14px; color: var(--ink-muted); line-height: 1.6; margin-bottom: 24px; }
+    .confirm-actions { display: flex; gap: 10px; justify-content: center; }
+
+    /* ===== Search ===== */
+    .search-wrap {
+      position: relative;
+    }
+    .search-input {
+      padding: 9px 14px 9px 36px;
+      border-radius: 10px;
+      border: 1.5px solid var(--hairline);
+      background: var(--canvas-alt);
+      color: var(--ink);
+      font-size: 14px;
+      font-family: var(--font-primary);
+      outline: none;
+      width: 220px;
+      transition: border-color 0.2s, width 0.3s;
+    }
+    .search-input:focus { border-color: var(--accent); width: 260px; }
+    .search-icon {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ink-muted);
+      pointer-events: none;
+    }
+
+    /* ===== Upload Area ===== */
+    .upload-area {
+      width: 100%;
+      height: 150px;
+      border: 2px dashed var(--hairline);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      text-align: center;
+      overflow: hidden;
+      background: var(--canvas-alt);
+    }
+    .upload-area:hover { border-color: var(--accent); background: rgba(0,102,204,0.04); }
+    html[data-theme="dark"] .upload-area:hover { background: rgba(41,151,255,0.06); }
+    .upload-area.dragover { border-color: var(--accent); background: rgba(0,102,204,0.08); }
+    .upload-area:hover .upload-hover-overlay { opacity: 1 !important; }
+
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .content { padding: 20px 16px; }
+      .stats-row { grid-template-columns: 1fr; }
+      .topbar { padding: 0 16px; }
+      .form-row { grid-template-columns: 1fr; }
+      .search-input { width: 160px; }
+      .search-input:focus { width: 190px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span>PH</span>
+      <div>
+        <div style="font-size:15px;font-weight:700;letter-spacing:-0.02em;">PortfolioHub</div>
+        <div style="font-size:11px;color:var(--ink-muted);font-weight:400;">Dashboard</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <button class="nav-item active" onclick="setView('projects')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        Projects
+        <span id="sidebarCount" style="margin-left:auto;background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:9999px;padding:1px 7px;"></span>
+      </button>
+    </nav>
+    <div class="sidebar-bottom">
+      <a href="index.html" class="theme-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Site
+      </a>
+      <button class="theme-btn" id="themeBtn">
+        <svg class="icon-moon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="icon-sun" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <span id="themeLabel">Dark Mode</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="main">
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-title">Projects</div>
+      <div class="topbar-right">
+        <div class="search-wrap">
+          <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input class="search-input" id="searchInput" type="text" placeholder="Search projects…" oninput="filterProjects()">
+        </div>
+        <button class="btn-primary" onclick="openAddModal()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Add Project
+        </button>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <main class="content">
+      <!-- Stats -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon blue">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+          </div>
+          <div>
+            <div class="stat-label">Total Projects</div>
+            <div class="stat-value" id="statTotal">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon blue" style="background:rgba(41,151,255,0.1);color:#2997ff;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <div>
+            <div class="stat-label">Personal</div>
+            <div class="stat-value" id="statPersonal">—</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon green">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          </div>
+          <div>
+            <div class="stat-label">Corporate</div>
+            <div class="stat-value" id="statCorporate">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Projects section -->
+      <div class="section-header">
+        <h2>All Projects</h2>
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all" onclick="setFilter(this,'all')">All</button>
+          <button class="filter-tab" data-filter="personal" onclick="setFilter(this,'personal')">Personal Portfolio</button>
+          <button class="filter-tab" data-filter="corporate" onclick="setFilter(this,'corporate')">Company Portfolio</button>
+        </div>
+      </div>
+
+      <div id="projectsGrid" class="projects-grid">
+        <!-- Skeleton loading -->
+        ${[1,2,3,4,5,6].map(() => `
+          <div class="skeleton">
+            <div class="skeleton-img"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-line"></div>
+              <div class="skeleton-line short"></div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Add/Edit Modal -->
+<div class="modal-backdrop" id="projectModal" onclick="handleBackdropClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="modalTitle">Add New Project</h3>
+      <button class="modal-close" onclick="closeModal('projectModal')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div>
+      <input type="hidden" id="editId">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Project Name *</label>
+          <input class="form-input" id="fieldTitle" type="text" placeholder="e.g. Ahmed Mohamed">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category *</label>
+          <select class="form-select" id="fieldCategory">
+            <option value="personal">Personal</option>
+            <option value="corporate">Corporate</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description *</label>
+        <input class="form-input" id="fieldDescription" type="text" placeholder="e.g. Portfolio Website">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Project URL *</label>
+        <input class="form-input" id="fieldUrl" type="url" placeholder="https://...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Project Image *</label>
+        <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+          <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="handleFileSelect(event)">
+          <div id="uploadPlaceholder">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto 8px;opacity:0.4"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <div style="font-size:13px;color:var(--ink-muted);">اضغط لاختيار صورة</div>
+            <div style="font-size:11px;color:var(--ink-muted);opacity:0.6;margin-top:4px;">PNG, JPG, WEBP — Max 5MB</div>
+          </div>
+          <div id="uploadPreview" style="display:none;width:100%;height:100%;position:relative;">
+            <img id="previewImg" style="width:100%;height:100%;object-fit:cover;border-radius:10px;" src="" alt="">
+            <div style="position:absolute;inset:0;background:rgba(0,0,0,0.45);border-radius:10px;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.2s;" class="upload-hover-overlay">
+              <span style="color:#fff;font-size:13px;font-weight:500;">Change Image</span>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" id="fieldImage">
+        <div id="uploadProgress" style="display:none;margin-top:8px;">
+          <div style="height:3px;background:var(--hairline);border-radius:9999px;overflow:hidden;">
+            <div id="uploadBar" style="height:100%;width:0%;background:var(--accent);border-radius:9999px;transition:width 0.3s;"></div>
+          </div>
+          <div style="font-size:11px;color:var(--ink-muted);margin-top:4px;" id="uploadStatus">Uploading…</div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-secondary" onclick="closeModal('projectModal')">Cancel</button>
+        <button class="btn-primary" id="saveBtn" onclick="saveProject()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Save Project
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Confirm Modal -->
+<div class="modal-backdrop" id="deleteModal" onclick="handleBackdropClick(event)">
+  <div class="modal confirm-modal">
+    <div class="confirm-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    </div>
+    <div class="confirm-title">Delete Project?</div>
+    <p class="confirm-text" id="deleteConfirmText">This will permanently remove this project from your portfolio.</p>
+    <div class="confirm-actions">
+      <button class="btn-secondary" onclick="closeModal('deleteModal')">Cancel</button>
+      <button class="btn-danger" id="confirmDeleteBtn" onclick="confirmDelete()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        Yes, Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+  // ===== Supabase config =====
+  const SUPABASE_URL = 'https://amvmyxnqapdfrqffmrmr.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtdm15eG5xYXBkZnJxZmZtcm1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNTU3MDcsImV4cCI6MjEwMTkzMTcwN30.LC1dBgX618d59UxFzN2qsw819scsTMMpBzPRyGWjYe0';
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'apikey': SUPABASE_KEY,
+    'Authorization': `Bearer ${SUPABASE_KEY}`,
+    'Prefer': 'return=representation'
+  };
+
+  // ===== State =====
+  let allProjects = [];
+  let currentFilter = 'all';
+  let deleteTargetId = null;
+  let editMode = false;
+
+  // ===== Theme =====
+  function initTheme() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.getElementById('themeLabel').textContent = isDark ? 'Light Mode' : 'Dark Mode';
+    document.querySelector('.icon-sun').style.display = isDark ? 'block' : 'none';
+    document.querySelector('.icon-moon').style.display = isDark ? 'none' : 'block';
+  }
+  document.getElementById('themeBtn').addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+    localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    initTheme();
+  });
+  initTheme();
+
+  // ===== View =====
+  function setView(v) {}
+
+  // ===== Filter =====
+  function setFilter(btn, filter) {
+    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = filter;
+    renderProjects();
+  }
+
+  function filterProjects() { renderProjects(); }
+
+  // ===== Fetch projects =====
+  async function loadProjects() {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/projects?select=*&order=created_at.desc`, { headers });
+      if (!res.ok) throw new Error(await res.text());
+      allProjects = await res.json();
+      updateStats();
+      renderProjects();
+    } catch (e) {
+      showToast('Failed to load projects: ' + e.message, 'error');
+      document.getElementById('projectsGrid').innerHTML = `
+        <div class="empty-state">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <p>Could not connect to the database.</p>
+        </div>`;
+    }
+  }
+
+  function updateStats() {
+    document.getElementById('statTotal').textContent = allProjects.length;
+    document.getElementById('statPersonal').textContent = allProjects.filter(p => p.category === 'personal').length;
+    document.getElementById('statCorporate').textContent = allProjects.filter(p => p.category === 'corporate').length;
+    document.getElementById('sidebarCount').textContent = allProjects.length;
+  }
+
+  function renderProjects() {
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    let filtered = allProjects;
+    if (currentFilter !== 'all') filtered = filtered.filter(p => p.category === currentFilter);
+    if (search) filtered = filtered.filter(p =>
+      p.title.toLowerCase().includes(search) || p.description.toLowerCase().includes(search)
+    );
+
+    const grid = document.getElementById('projectsGrid');
+    if (filtered.length === 0) {
+      grid.innerHTML = `<div class="empty-state">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+        <p>No projects found. Add your first one!</p>
+      </div>`;
+      return;
+    }
+
+    grid.innerHTML = filtered.map(p => `
+      <div class="project-card" id="card-${p.id}">
+        <div class="card-image" style="background-image:url('${escapeHtml(p.image_url)}')">
+          <span class="card-badge ${p.category}">${p.category === 'corporate' ? 'Company Portfolio' : 'Personal Portfolio'}</span>
+        </div>
+        <div class="card-body">
+          <div class="card-title">${escapeHtml(p.title)}</div>
+          <div class="card-desc">${escapeHtml(p.description)}</div>
+          <a href="${escapeHtml(p.url)}" target="_blank" rel="noopener" class="card-url">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            ${escapeHtml(p.url.replace(/^https?:\/\//, '').replace(/\/$/, ''))}
+          </a>
+          <div class="card-actions">
+            <button class="btn-edit" onclick="openEditModal(${p.id})">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              Edit
+            </button>
+            <button class="btn-danger" onclick="openDeleteModal(${p.id}, '${escapeHtml(p.title)}')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  // ===== Add Modal =====
+  function openAddModal() {
+    editMode = false;
+    document.getElementById('modalTitle').textContent = 'Add New Project';
+    document.getElementById('saveBtn').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Save Project`;
+    clearForm();
+    openModal('projectModal');
+  }
+
+  function openEditModal(id) {
+    const p = allProjects.find(x => x.id === id);
+    if (!p) return;
+    editMode = true;
+    document.getElementById('editId').value = id;
+    document.getElementById('modalTitle').textContent = 'Edit Project';
+    document.getElementById('saveBtn').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Update Project`;
+    document.getElementById('fieldTitle').value = p.title;
+    document.getElementById('fieldDescription').value = p.description;
+    document.getElementById('fieldCategory').value = p.category;
+    document.getElementById('fieldUrl').value = p.url;
+    document.getElementById('fieldImage').value = p.image_url;
+    // Show existing image as preview
+    resetUpload();
+    if (p.image_url) {
+      document.getElementById('fieldImage').value = p.image_url;
+      showPreview(p.image_url);
+    }
+    openModal('projectModal');
+  }
+
+  // ===== Image Upload =====
+  let pendingFile = null;
+
+  function handleFileSelect(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 5 * 1024 * 1024) { showToast('Image must be under 5MB.', 'error'); return; }
+    pendingFile = file;
+    const reader = new FileReader();
+    reader.onload = ev => showPreview(ev.target.result);
+    reader.readAsDataURL(file);
+  }
+
+  function showPreview(src) {
+    document.getElementById('uploadPlaceholder').style.display = 'none';
+    document.getElementById('uploadPreview').style.display = 'block';
+    document.getElementById('previewImg').src = src;
+  }
+
+  function resetUpload() {
+    pendingFile = null;
+    document.getElementById('fileInput').value = '';
+    document.getElementById('uploadPlaceholder').style.display = 'flex';
+    document.getElementById('uploadPlaceholder').style.flexDirection = 'column';
+    document.getElementById('uploadPreview').style.display = 'none';
+    document.getElementById('previewImg').src = '';
+    document.getElementById('fieldImage').value = '';
+    document.getElementById('uploadProgress').style.display = 'none';
+    document.getElementById('uploadBar').style.width = '0%';
+  }
+
+  async function uploadImageToSupabase(file) {
+    const ext = file.name.split('.').pop();
+    const fileName = `project_${Date.now()}.${ext}`;
+    document.getElementById('uploadProgress').style.display = 'block';
+    document.getElementById('uploadBar').style.width = '30%';
+    document.getElementById('uploadStatus').textContent = 'Uploading image…';
+
+    const res = await fetch(`${SUPABASE_URL}/storage/v1/object/projects/${fileName}`, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': `Bearer ${SUPABASE_KEY}`,
+        'Content-Type': file.type,
+        'x-upsert': 'true'
+      },
+      body: file
+    });
+
+    document.getElementById('uploadBar').style.width = '90%';
+    if (!res.ok) {
+      const err = await res.text();
+      document.getElementById('uploadProgress').style.display = 'none';
+      throw new Error('Upload failed: ' + err);
+    }
+
+    document.getElementById('uploadBar').style.width = '100%';
+    document.getElementById('uploadStatus').textContent = 'Upload complete!';
+    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/projects/${fileName}`;
+    return publicUrl;
+  }
+
+  // Drag & drop
+  const uploadArea = document.getElementById('uploadArea');
+  uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+  uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+  uploadArea.addEventListener('drop', e => {
+    e.preventDefault();
+    uploadArea.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file && file.type.startsWith('image/')) {
+      document.getElementById('fileInput').files = e.dataTransfer.files;
+      handleFileSelect({ target: { files: [file] } });
+    }
+  });
+
+  function clearForm() {
+    ['editId','fieldTitle','fieldDescription','fieldUrl'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('fieldCategory').value = 'personal';
+    resetUpload();
+  }
+
+  async function saveProject() {
+    const title = document.getElementById('fieldTitle').value.trim();
+    const description = document.getElementById('fieldDescription').value.trim();
+    const category = document.getElementById('fieldCategory').value;
+    const url = document.getElementById('fieldUrl').value.trim();
+    let image_url = document.getElementById('fieldImage').value.trim();
+
+    if (!title || !description || !url) {
+      showToast('Please fill in all required fields.', 'error');
+      return;
+    }
+    if (!image_url && !pendingFile) {
+      showToast('Please select a project image.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('saveBtn');
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+
+    try {
+      // Upload new image if selected
+      if (pendingFile) {
+        image_url = await uploadImageToSupabase(pendingFile);
+      }
+
+      const body = { title, description, category, url, image_url };
+
+      if (editMode) {
+        const id = document.getElementById('editId').value;
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/projects?id=eq.${id}`, {
+          method: 'PATCH',
+          headers,
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) throw new Error(await res.text());
+        showToast('Project updated successfully!', 'success');
+      } else {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/projects`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) throw new Error(await res.text());
+        showToast('Project added successfully!', 'success');
+      }
+      closeModal('projectModal');
+      await loadProjects();
+    } catch (e) {
+      showToast('Error: ' + e.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+  }
+
+  // ===== Delete =====
+  function openDeleteModal(id, name) {
+    deleteTargetId = id;
+    document.getElementById('deleteConfirmText').textContent = `"${name}" will be permanently removed from your portfolio.`;
+    openModal('deleteModal');
+  }
+
+  async function confirmDelete() {
+    if (!deleteTargetId) return;
+    const btn = document.getElementById('confirmDeleteBtn');
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/projects?id=eq.${deleteTargetId}`, {
+        method: 'DELETE',
+        headers
+      });
+      if (!res.ok) throw new Error(await res.text());
+      showToast('Project deleted.', 'success');
+      closeModal('deleteModal');
+      await loadProjects();
+    } catch (e) {
+      showToast('Error: ' + e.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      deleteTargetId = null;
+    }
+  }
+
+  // ===== Modal helpers =====
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+  function handleBackdropClick(e) {
+    if (e.target.classList.contains('modal-backdrop')) {
+      e.currentTarget.classList.remove('open');
+    }
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-backdrop.open').forEach(m => m.classList.remove('open'));
+    }
+  });
+
+  // ===== Toast =====
+  function showToast(msg, type = 'success') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = type === 'success'
+      ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${msg}`
+      : `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>${msg}`;
+    container.appendChild(toast);
+    setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity 0.3s'; setTimeout(() => toast.remove(), 300); }, 3000);
+  }
+
+  // ===== Utils =====
+  function escapeHtml(str) {
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+  }
+
+  // ===== Init =====
+  loadProjects();
+</script>
+</body>
+</html>
