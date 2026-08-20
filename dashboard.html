@@ -1526,32 +1526,24 @@
   async function loadTransactions() {
     try {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/transactions?select=*&order=date.desc,created_at.desc`, { headers });
-      if (res.ok) {
-        allTransactions = await res.json();
-        localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
-      } else {
-        throw new Error('Supabase table not found or query error');
-      }
+      if (!res.ok) throw new Error(await res.text());
+      allTransactions = await res.json();
+      updateFinanceStats();
+      renderTransactions();
     } catch (e) {
-      const saved = localStorage.getItem('phub_transactions');
-      if (saved) {
-        try {
-          allTransactions = JSON.parse(saved);
-        } catch (err) {
-          allTransactions = [...defaultTransactions];
-        }
-      } else {
-        allTransactions = [...defaultTransactions];
-        localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
+      allTransactions = [];
+      updateFinanceStats();
+      showToast('خطأ في تحميل البيانات من Supabase: ' + e.message, 'error');
+      const tbody = document.getElementById('transactionsTbody');
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" style="text-align: center; padding: 48px; color: var(--ink-muted);">
+               تعذر الاتصال بـ Supabase. يرجى التأكد من تشغيل كود SQL وإنشاء جدول transactions!
+            </td>
+          </tr>`;
       }
     }
-    updateFinanceStats();
-    if (currentView === 'finance') renderTransactions();
-  }
-
-  function persistTransactions() {
-    localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
-    updateFinanceStats();
   }
 
   function updateFinanceStats() {
@@ -1807,20 +1799,7 @@
       closeModal('transactionModal');
       await loadTransactions();
     } catch (e) {
-      // Local fallback
-      if (txEditMode) {
-        const id = document.getElementById('txEditId').value;
-        const idx = allTransactions.findIndex(x => String(x.id) === String(id));
-        if (idx !== -1) {
-          allTransactions[idx] = { id, ...payload };
-        }
-      } else {
-        allTransactions.unshift({ id: 'tx-' + Date.now(), ...payload });
-      }
-      localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
-      showToast('تم الحفظ بنجاح!', 'success');
-      closeModal('transactionModal');
-      renderTransactions();
+      showToast('خطأ أثناء الحفظ في Supabase: ' + e.message, 'error');
     } finally {
       btn.disabled = false;
       btn.style.opacity = '1';
@@ -1848,16 +1827,14 @@
       });
       if (!res.ok) throw new Error(await res.text());
       showToast('تم حذف العملية بنجاح.', 'success');
+      closeModal('deleteTxModal');
+      await loadTransactions();
     } catch (e) {
-      allTransactions = allTransactions.filter(x => String(x.id) !== String(deleteTxTargetId));
-      localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
-      showToast('تم حذف العملية بنجاح.', 'success');
+      showToast('خطأ أثناء الحذف من Supabase: ' + e.message, 'error');
     } finally {
       btn.disabled = false;
       btn.style.opacity = '1';
       deleteTxTargetId = null;
-      closeModal('deleteTxModal');
-      await loadTransactions();
     }
   }
 
