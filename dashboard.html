@@ -1629,6 +1629,7 @@
     if (search && currentView === 'finance') {
       filtered = filtered.filter(t =>
         (t.reason && t.reason.toLowerCase().includes(search)) ||
+        (t.description && t.description.toLowerCase().includes(search)) ||
         (t.category && t.category.toLowerCase().includes(search)) ||
         (t.notes && t.notes.toLowerCase().includes(search))
       );
@@ -1652,6 +1653,7 @@
       const isIncome = t.type === 'income';
       const amountSign = isIncome ? '+' : '-';
       const formattedAmount = `${amountSign}${formatCurrency(t.amount)}`;
+      const reasonText = t.reason || t.description || '';
 
       return `
         <tr>
@@ -1662,7 +1664,7 @@
             </span>
           </td>
           <td>
-            <div style="font-weight:600; color:var(--ink);">${escapeHtml(t.reason)}</div>
+            <div style="font-weight:600; color:var(--ink);">${escapeHtml(reasonText)}</div>
             ${t.notes ? `<div style="font-size:12px; color:var(--ink-muted); margin-top:2px;">${escapeHtml(t.notes)}</div>` : ''}
           </td>
           <td>
