@@ -194,7 +194,7 @@
     /* ===== Content ===== */
     .content { padding: 32px; flex: 1; }
 
-    /* ===== Stats ===== */
+    /* ===== Stats Grid ===== */
     .stats-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -253,7 +253,7 @@
       background: var(--accent);
     }
     .monthly-info-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 600;
       color: var(--ink-muted);
       margin-bottom: 4px;
@@ -283,7 +283,7 @@
       font-weight: 700;
     }
 
-    /* ===== Section header ===== */
+    /* ===== Section Header ===== */
     .section-header {
       display: flex;
       align-items: center;
@@ -305,7 +305,7 @@
       flex-wrap: wrap;
     }
 
-    /* ===== Primary Button ===== */
+    /* ===== Buttons ===== */
     .btn-primary {
       display: inline-flex;
       align-items: center;
@@ -376,7 +376,7 @@
     }
     .btn-edit:hover { background: var(--card-hover); color: var(--ink); }
 
-    /* ===== Filter tabs ===== */
+    /* ===== Filter Tabs ===== */
     .filter-tabs {
       display: flex;
       gap: 4px;
@@ -410,7 +410,6 @@
       gap: 16px;
     }
 
-    /* ===== Project Card ===== */
     .project-card {
       background: var(--canvas);
       border-radius: 16px;
@@ -463,7 +462,7 @@
     }
     .card-actions { display: flex; gap: 8px; }
 
-    /* ===== Finance Table ===== */
+    /* ===== Table ===== */
     .table-container {
       background: var(--canvas);
       border: 1px solid var(--hairline);
@@ -531,7 +530,7 @@
     .amount-cell.income { color: var(--success); }
     .amount-cell.expense { color: var(--danger); }
 
-    /* ===== Empty state ===== */
+    /* ===== Empty State ===== */
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
@@ -541,7 +540,7 @@
     .empty-state svg { margin: 0 auto 16px; opacity: 0.3; }
     .empty-state p { font-size: 15px; }
 
-    /* ===== Loading ===== */
+    /* ===== Skeleton ===== */
     .skeleton {
       background: var(--canvas);
       border-radius: 16px;
@@ -567,7 +566,7 @@
     .skeleton-line.short { width: 60%; }
     @keyframes shimmer { to { background-position: -200% 0; } }
 
-    /* ===== Modal ===== */
+    /* ===== Modals ===== */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -621,7 +620,7 @@
     }
     .modal-close:hover { background: var(--card-hover); color: var(--ink); }
 
-    /* ===== Form ===== */
+    /* ===== Forms ===== */
     .form-group { margin-bottom: 16px; }
     .form-label {
       display: block;
@@ -708,9 +707,7 @@
     .confirm-actions { display: flex; gap: 10px; justify-content: center; }
 
     /* ===== Search ===== */
-    .search-wrap {
-      position: relative;
-    }
+    .search-wrap { position: relative; }
     .search-input {
       padding: 9px 14px 9px 36px;
       border-radius: 10px;
@@ -833,7 +830,6 @@
 
       <!-- ================= PROJECTS VIEW ================= -->
       <div id="projectsView">
-        <!-- Stats -->
         <div class="stats-row">
           <div class="stat-card">
             <div class="stat-icon blue">
@@ -864,7 +860,6 @@
           </div>
         </div>
 
-        <!-- Projects section -->
         <div class="section-header">
           <h2>All Projects</h2>
           <div class="filter-tabs">
@@ -875,7 +870,6 @@
         </div>
 
         <div id="projectsGrid" class="projects-grid">
-          <!-- Skeleton loading -->
           <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
           <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
           <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
@@ -884,7 +878,7 @@
 
       <!-- ================= FINANCE VIEW ================= -->
       <div id="financeView" style="display:none;">
-        <!-- 4 KPI Cards -->
+        <!-- 4 Top KPI Cards -->
         <div class="stats-row cols-4">
           <div class="stat-card">
             <div class="stat-icon green">
@@ -930,8 +924,8 @@
         <!-- Monthly Overview Banner -->
         <div class="monthly-banner">
           <div>
-            <div class="monthly-info-title">Monthly Performance overview</div>
-            <div class="monthly-info-month" id="finCurrentMonthLabel">أغسطس 2026</div>
+            <div class="monthly-info-title">Monthly Overview (الصافي الشهر الحالي)</div>
+            <div class="monthly-info-month" id="finCurrentMonthLabel">—</div>
           </div>
           <div class="monthly-metrics">
             <div class="monthly-metric-item">
@@ -943,7 +937,7 @@
               <span class="monthly-metric-val" style="color:var(--danger);" id="finMonthExpense">0 EGP</span>
             </div>
             <div class="monthly-metric-item">
-              <span class="monthly-metric-label">صافي الشهر الحالي</span>
+              <span class="monthly-metric-label">صافي الشهر</span>
               <span class="monthly-metric-val" style="color:var(--accent);" id="finMonthNet">+0 EGP</span>
             </div>
           </div>
@@ -953,14 +947,14 @@
         <div class="section-header">
           <h2>سجل العمليات المالية (Transactions)</h2>
           <div class="section-header-controls">
-            <!-- Type filter -->
+            <!-- Type Filter Tabs -->
             <div class="filter-tabs" id="finTypeFilterTabs">
               <button class="filter-tab active" data-type="all" onclick="setFinTypeFilter(this,'all')">الكل</button>
               <button class="filter-tab" data-type="income" onclick="setFinTypeFilter(this,'income')">الدخل</button>
               <button class="filter-tab" data-type="expense" onclick="setFinTypeFilter(this,'expense')">المصروفات</button>
             </div>
 
-            <!-- Time filter -->
+            <!-- Time Filter Select -->
             <select class="form-select" id="finTimeFilter" onchange="filterTransactions()" style="width: auto; padding: 6px 12px; font-size: 13px;">
               <option value="this_month">هذا الشهر</option>
               <option value="last_month">الشهر الماضي</option>
@@ -985,7 +979,7 @@
                 </tr>
               </thead>
               <tbody id="transactionsTbody">
-                <!-- Dynamically injected -->
+                <!-- Dynamically populated from Supabase -->
               </tbody>
             </table>
           </div>
@@ -1064,7 +1058,7 @@
   </div>
 </div>
 
-<!-- Delete Project Confirm Modal -->
+<!-- Delete Project Modal -->
 <div class="modal-backdrop" id="deleteModal" onclick="handleBackdropClick(event)">
   <div class="modal confirm-modal">
     <div class="confirm-icon">
@@ -1115,7 +1109,7 @@
         <div class="form-group">
           <label class="form-label">التصنيف *</label>
           <select class="form-select" id="txCategory">
-            <!-- Dynamically populated -->
+            <!-- Dynamic -->
           </select>
         </div>
       </div>
@@ -1141,14 +1135,14 @@
   </div>
 </div>
 
-<!-- Delete Transaction Confirm Modal -->
+<!-- Delete Transaction Modal -->
 <div class="modal-backdrop" id="deleteTxModal" onclick="handleBackdropClick(event)">
   <div class="modal confirm-modal">
     <div class="confirm-icon">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
     </div>
     <div class="confirm-title">حذف العملية المالية؟</div>
-    <p class="confirm-text" id="deleteTxConfirmText">سيتم حذف هذه العملية بشكل نهائي من السجل المالي.</p>
+    <p class="confirm-text" id="deleteTxConfirmText">سيتم حذف هذه العملية بشكل نهائي من Supabase.</p>
     <div class="confirm-actions">
       <button class="btn-secondary" onclick="closeModal('deleteTxModal')">إلغاء</button>
       <button class="btn-danger" id="confirmDeleteTxBtn" onclick="confirmDeleteTransaction()">
@@ -1159,11 +1153,11 @@
   </div>
 </div>
 
-<!-- Toast container -->
+<!-- Toast Container -->
 <div class="toast-container" id="toastContainer"></div>
 
 <script>
-  // ===== Supabase config =====
+  // ===== Supabase Config =====
   const SUPABASE_URL = 'https://amvmyxnqapdfrqffmrmr.supabase.co';
   const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFtdm15eG5xYXBkZnJxZmZtcm1yIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODYzNTU3MDcsImV4cCI6MjEwMTkzMTcwN30.LC1dBgX618d59UxFzN2qsw819scsTMMpBzPRyGWjYe0';
 
@@ -1174,29 +1168,21 @@
     'Prefer': 'return=representation'
   };
 
-  // ===== State =====
-  let currentView = 'projects'; // 'projects' | 'finance'
+  // ===== Projects State =====
+  let currentView = 'projects';
   let allProjects = [];
   let currentFilter = 'all';
   let deleteTargetId = null;
   let editMode = false;
 
-  // Finance State
+  // ===== Finance State =====
   let allTransactions = [];
-  let currentFinTypeFilter = 'all'; // 'all' | 'income' | 'expense'
+  let currentFinTypeFilter = 'all';
   let deleteTxTargetId = null;
   let txEditMode = false;
 
-  // Income & Expense Categories
   const incomeCategories = ['Portfolio', 'خدمة أخرى', 'عميل', 'أخرى'];
   const expenseCategories = ['Content', 'Design', 'Ads', 'Tools', 'Hosting / Domain', 'Operations', 'Other'];
-
-  // Default seed transactions
-  const defaultTransactions = [
-    { id: 'tx-101', date: '2026-08-20', type: 'income', reason: 'Portfolio عميل', category: 'Portfolio', amount: 1000, notes: 'مبيعات بنظام البورتفوليو' },
-    { id: 'tx-102', date: '2026-08-20', type: 'expense', reason: 'Content Strategy', category: 'Content', amount: 1500, notes: 'إعداد خطة المحتوى' },
-    { id: 'tx-103', date: '2026-08-21', type: 'expense', reason: 'دومين', category: 'Hosting / Domain', amount: 300, notes: 'تجديد نطاق PortfolioHub' }
-  ];
 
   // ===== Theme =====
   function initTheme() {
@@ -1213,7 +1199,7 @@
   });
   initTheme();
 
-  // ===== View Switcher =====
+  // ===== View Switching =====
   function setView(v) {
     currentView = v;
     document.getElementById('navProjects').classList.toggle('active', v === 'projects');
@@ -1230,7 +1216,7 @@
       document.getElementById('topbarTitle').textContent = 'Financial Overview / السجل المالي';
       document.getElementById('topbarAddText').textContent = 'إضافة عملية';
       document.getElementById('searchInput').placeholder = 'بحث في العمليات…';
-      renderTransactions();
+      loadTransactions();
     }
   }
 
@@ -1250,7 +1236,7 @@
     }
   }
 
-  // ===== Projects Logic =====
+  // ===== Projects Functions =====
   function setFilter(btn, filter) {
     document.querySelectorAll('#projectsView .filter-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -1521,7 +1507,7 @@
   }
 
 
-  // ================= FINANCE LOGIC =================
+  // ================= FINANCE LOGIC (STRICT SUPABASE ONLY) =================
 
   async function loadTransactions() {
     try {
@@ -1533,13 +1519,12 @@
     } catch (e) {
       allTransactions = [];
       updateFinanceStats();
-      showToast('خطأ في تحميل البيانات من Supabase: ' + e.message, 'error');
       const tbody = document.getElementById('transactionsTbody');
       if (tbody) {
         tbody.innerHTML = `
           <tr>
             <td colspan="6" style="text-align: center; padding: 48px; color: var(--ink-muted);">
-               تعذر الاتصال بـ Supabase. يرجى التأكد من تشغيل كود SQL وإنشاء جدول transactions!
+               ⚠️ تعذر الاتصال بـ Supabase. يرجى إنشاء جدول transactions بقاعدة البيانات أولاً!
             </td>
           </tr>`;
       }
@@ -1618,12 +1603,10 @@
 
     let filtered = [...allTransactions];
 
-    // 1. Type Filter
     if (currentFinTypeFilter !== 'all') {
       filtered = filtered.filter(t => t.type === currentFinTypeFilter);
     }
 
-    // 2. Time Filter
     if (timeFilter === 'this_month') {
       filtered = filtered.filter(t => {
         const d = new Date(t.date);
@@ -1643,7 +1626,6 @@
       });
     }
 
-    // 3. Search Filter
     if (search && currentView === 'finance') {
       filtered = filtered.filter(t =>
         (t.reason && t.reason.toLowerCase().includes(search)) ||
@@ -1652,7 +1634,6 @@
       );
     }
 
-    // Sort by Date Descending
     filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
 
     const tbody = document.getElementById('transactionsTbody');
@@ -1709,7 +1690,7 @@
     if (!dateStr) return '';
     const parts = dateStr.split('-');
     if (parts.length === 3) {
-      return `${parts[2]}/${parts[1]}/${parts[0]}`; // DD/MM/YYYY
+      return `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
     return dateStr;
   }
@@ -1786,7 +1767,7 @@
           body: JSON.stringify(payload)
         });
         if (!res.ok) throw new Error(await res.text());
-        showToast('تم تحديث العملية بنجاح!', 'success');
+        showToast('تم تحديث العملية بنجاح في Supabase!', 'success');
       } else {
         const res = await fetch(`${SUPABASE_URL}/rest/v1/transactions`, {
           method: 'POST',
@@ -1794,7 +1775,7 @@
           body: JSON.stringify(payload)
         });
         if (!res.ok) throw new Error(await res.text());
-        showToast('تمت إضافة العملية بنجاح!', 'success');
+        showToast('تمت إضافة العملية بنجاح في Supabase!', 'success');
       }
       closeModal('transactionModal');
       await loadTransactions();
@@ -1826,7 +1807,7 @@
         headers
       });
       if (!res.ok) throw new Error(await res.text());
-      showToast('تم حذف العملية بنجاح.', 'success');
+      showToast('تم حذف العملية بنجاح من Supabase.', 'success');
       closeModal('deleteTxModal');
       await loadTransactions();
     } catch (e) {
@@ -1838,7 +1819,7 @@
     }
   }
 
-  // ===== Modal helpers =====
+  // ===== Modal Helpers =====
   function openModal(id) { document.getElementById(id).classList.add('open'); }
   function closeModal(id) { document.getElementById(id).classList.remove('open'); }
   function handleBackdropClick(e) {
@@ -1871,7 +1852,6 @@
 
   // ===== Init =====
   loadProjects();
-  loadTransactions();
 </script>
 </body>
 </html>
