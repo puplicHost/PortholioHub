@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PortfolioHub — Projects Dashboard</title>
+  <title>PortfolioHub — Dashboard</title>
   <link rel="icon" type="image/png" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -201,6 +201,9 @@
       gap: 16px;
       margin-bottom: 32px;
     }
+    .stats-row.cols-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
     .stat-card {
       background: var(--canvas);
       border-radius: 16px;
@@ -221,9 +224,64 @@
     }
     .stat-icon.blue { background: rgba(0,102,204,0.1); color: var(--accent); }
     .stat-icon.green { background: var(--success-bg); color: var(--success); }
+    .stat-icon.red { background: var(--danger-bg); color: var(--danger); }
     .stat-icon.orange { background: rgba(255,159,10,0.1); color: #ff9f0a; }
+    .stat-icon.purple { background: rgba(175,82,222,0.1); color: #af52de; }
     .stat-label { font-size: 13px; color: var(--ink-muted); font-weight: 400; margin-bottom: 4px; }
     .stat-value { font-size: 24px; font-weight: 700; letter-spacing: -0.03em; color: var(--ink); }
+
+    /* ===== Monthly Summary Banner ===== */
+    .monthly-banner {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+    }
+    .monthly-banner::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 4px;
+      background: var(--accent);
+    }
+    .monthly-info-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-bottom: 4px;
+    }
+    .monthly-info-month {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .monthly-metrics {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .monthly-metric-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .monthly-metric-label {
+      font-size: 12px;
+      color: var(--ink-muted);
+      margin-bottom: 2px;
+    }
+    .monthly-metric-val {
+      font-size: 16px;
+      font-weight: 700;
+    }
 
     /* ===== Section header ===== */
     .section-header {
@@ -231,12 +289,20 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
     }
     .section-header h2 {
       font-size: 17px;
       font-weight: 600;
       letter-spacing: -0.02em;
       color: var(--ink);
+    }
+    .section-header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     /* ===== Primary Button ===== */
@@ -397,6 +463,74 @@
     }
     .card-actions { display: flex; gap: 8px; }
 
+    /* ===== Finance Table ===== */
+    .table-container {
+      background: var(--canvas);
+      border: 1px solid var(--hairline);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+    }
+    .fin-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 14px;
+    }
+    .fin-table th {
+      padding: 14px 20px;
+      background: var(--canvas-alt);
+      border-bottom: 1px solid var(--hairline);
+      color: var(--ink-muted);
+      font-weight: 600;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .fin-table td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--divider);
+      color: var(--ink);
+      vertical-align: middle;
+    }
+    .fin-table tr:last-child td { border-bottom: none; }
+    .fin-table tr:hover td { background: var(--card-hover); }
+
+    .type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .type-badge.income { background: var(--success-bg); color: var(--success); }
+    .type-badge.expense { background: var(--danger-bg); color: var(--danger); }
+
+    .category-tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--canvas-alt);
+      border: 1px solid var(--hairline);
+      font-size: 12px;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    .amount-cell {
+      font-weight: 700;
+      font-size: 15px;
+      white-space: nowrap;
+    }
+    .amount-cell.income { color: var(--success); }
+    .amount-cell.expense { color: var(--danger); }
+
     /* ===== Empty state ===== */
     .empty-state {
       grid-column: 1 / -1;
@@ -408,11 +542,6 @@
     .empty-state p { font-size: 15px; }
 
     /* ===== Loading ===== */
-    .loading-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px;
-    }
     .skeleton {
       background: var(--canvas);
       border-radius: 16px;
@@ -501,7 +630,7 @@
       color: var(--ink-muted);
       margin-bottom: 6px;
     }
-    .form-input, .form-select {
+    .form-input, .form-select, .form-textarea {
       width: 100%;
       padding: 10px 14px;
       border-radius: 10px;
@@ -513,9 +642,10 @@
       transition: border-color 0.2s;
       outline: none;
     }
-    .form-input:focus, .form-select:focus { border-color: var(--accent); }
-    .form-input::placeholder { color: var(--ink-muted); opacity: 0.6; }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent); }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--ink-muted); opacity: 0.6; }
     .form-select { cursor: pointer; }
+    .form-textarea { resize: vertical; min-height: 70px; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .form-actions {
       display: flex;
@@ -623,6 +753,9 @@
     .upload-area.dragover { border-color: var(--accent); background: rgba(0,102,204,0.08); }
     .upload-area:hover .upload-hover-overlay { opacity: 1 !important; }
 
+    @media (max-width: 1100px) {
+      .stats-row.cols-4 { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 900px) {
       .sidebar { display: none; }
       .main { margin-left: 0; }
@@ -630,11 +763,13 @@
     }
     @media (max-width: 600px) {
       .content { padding: 20px 16px; }
-      .stats-row { grid-template-columns: 1fr; }
+      .stats-row, .stats-row.cols-4 { grid-template-columns: 1fr; }
       .topbar { padding: 0 16px; }
       .form-row { grid-template-columns: 1fr; }
       .search-input { width: 160px; }
       .search-input:focus { width: 190px; }
+      .monthly-banner { flex-direction: column; align-items: flex-start; }
+      .monthly-metrics { gap: 16px; width: 100%; justify-content: space-between; }
     }
   </style>
 </head>
@@ -651,10 +786,16 @@
       </div>
     </div>
     <nav class="sidebar-nav">
-      <button class="nav-item active" onclick="setView('projects')">
+      <button class="nav-item active" id="navProjects" onclick="setView('projects')">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
         Projects
         <span id="sidebarCount" style="margin-left:auto;background:var(--accent);color:#fff;font-size:11px;font-weight:700;border-radius:9999px;padding:1px 7px;"></span>
+      </button>
+
+      <button class="nav-item" id="navFinance" onclick="setView('finance')">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        Finance Overview
+        <span id="sidebarFinanceBadge" style="margin-left:auto;background:var(--success);color:#fff;font-size:11px;font-weight:700;border-radius:9999px;padding:1px 7px;">EGP</span>
       </button>
     </nav>
     <div class="sidebar-bottom">
@@ -674,79 +815,189 @@
   <div class="main">
     <!-- Topbar -->
     <header class="topbar">
-      <div class="topbar-title">Projects</div>
+      <div class="topbar-title" id="topbarTitle">Projects</div>
       <div class="topbar-right">
         <div class="search-wrap">
           <svg class="search-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-          <input class="search-input" id="searchInput" type="text" placeholder="Search projects…" oninput="filterProjects()">
+          <input class="search-input" id="searchInput" type="text" placeholder="Search projects…" oninput="handleSearch()">
         </div>
-        <button class="btn-primary" onclick="openAddModal()">
+        <button class="btn-primary" id="topbarAddBtn" onclick="handleTopbarAdd()">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Add Project
+          <span id="topbarAddText">Add Project</span>
         </button>
       </div>
     </header>
 
     <!-- Content -->
     <main class="content">
-      <!-- Stats -->
-      <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-icon blue">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
-          </div>
-          <div>
-            <div class="stat-label">Total Projects</div>
-            <div class="stat-value" id="statTotal">—</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon blue" style="background:rgba(41,151,255,0.1);color:#2997ff;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-          </div>
-          <div>
-            <div class="stat-label">Personal</div>
-            <div class="stat-value" id="statPersonal">—</div>
-          </div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon green">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
-          <div>
-            <div class="stat-label">Corporate</div>
-            <div class="stat-value" id="statCorporate">—</div>
-          </div>
-        </div>
-      </div>
 
-      <!-- Projects section -->
-      <div class="section-header">
-        <h2>All Projects</h2>
-        <div class="filter-tabs">
-          <button class="filter-tab active" data-filter="all" onclick="setFilter(this,'all')">All</button>
-          <button class="filter-tab" data-filter="personal" onclick="setFilter(this,'personal')">Personal Portfolio</button>
-          <button class="filter-tab" data-filter="corporate" onclick="setFilter(this,'corporate')">Company Portfolio</button>
-        </div>
-      </div>
-
-      <div id="projectsGrid" class="projects-grid">
-        <!-- Skeleton loading -->
-        ${[1,2,3,4,5,6].map(() => `
-          <div class="skeleton">
-            <div class="skeleton-img"></div>
-            <div class="skeleton-body">
-              <div class="skeleton-line"></div>
-              <div class="skeleton-line short"></div>
+      <!-- ================= PROJECTS VIEW ================= -->
+      <div id="projectsView">
+        <!-- Stats -->
+        <div class="stats-row">
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+            </div>
+            <div>
+              <div class="stat-label">Total Projects</div>
+              <div class="stat-value" id="statTotal">—</div>
             </div>
           </div>
-        `).join('')}
+          <div class="stat-card">
+            <div class="stat-icon blue" style="background:rgba(41,151,255,0.1);color:#2997ff;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div>
+              <div class="stat-label">Personal</div>
+              <div class="stat-value" id="statPersonal">—</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </div>
+            <div>
+              <div class="stat-label">Corporate</div>
+              <div class="stat-value" id="statCorporate">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Projects section -->
+        <div class="section-header">
+          <h2>All Projects</h2>
+          <div class="filter-tabs">
+            <button class="filter-tab active" data-filter="all" onclick="setFilter(this,'all')">All</button>
+            <button class="filter-tab" data-filter="personal" onclick="setFilter(this,'personal')">Personal Portfolio</button>
+            <button class="filter-tab" data-filter="corporate" onclick="setFilter(this,'corporate')">Company Portfolio</button>
+          </div>
+        </div>
+
+        <div id="projectsGrid" class="projects-grid">
+          <!-- Skeleton loading -->
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+          <div class="skeleton"><div class="skeleton-img"></div><div class="skeleton-body"><div class="skeleton-line"></div><div class="skeleton-line short"></div></div></div>
+        </div>
       </div>
+
+      <!-- ================= FINANCE VIEW ================= -->
+      <div id="financeView" style="display:none;">
+        <!-- 4 KPI Cards -->
+        <div class="stats-row cols-4">
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div>
+              <div class="stat-label">💰 إجمالي الدخل</div>
+              <div class="stat-value" id="finTotalIncome">0 EGP</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon red">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            </div>
+            <div>
+              <div class="stat-label">💸 إجمالي المصروفات</div>
+              <div class="stat-value" id="finTotalExpenses">0 EGP</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div>
+              <div class="stat-label">📈 صافي الربح</div>
+              <div class="stat-value" id="finNetProfit">0 EGP</div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon purple">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            </div>
+            <div>
+              <div class="stat-label">📊 رصيد البراند</div>
+              <div class="stat-value" id="finBrandBalance">0 EGP</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Monthly Overview Banner -->
+        <div class="monthly-banner">
+          <div>
+            <div class="monthly-info-title">Monthly Performance overview</div>
+            <div class="monthly-info-month" id="finCurrentMonthLabel">أغسطس 2026</div>
+          </div>
+          <div class="monthly-metrics">
+            <div class="monthly-metric-item">
+              <span class="monthly-metric-label">دخل الشهر</span>
+              <span class="monthly-metric-val" style="color:var(--success);" id="finMonthIncome">0 EGP</span>
+            </div>
+            <div class="monthly-metric-item">
+              <span class="monthly-metric-label">مصروف الشهر</span>
+              <span class="monthly-metric-val" style="color:var(--danger);" id="finMonthExpense">0 EGP</span>
+            </div>
+            <div class="monthly-metric-item">
+              <span class="monthly-metric-label">صافي الشهر الحالي</span>
+              <span class="monthly-metric-val" style="color:var(--accent);" id="finMonthNet">+0 EGP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section Header & Filters -->
+        <div class="section-header">
+          <h2>سجل العمليات المالية (Transactions)</h2>
+          <div class="section-header-controls">
+            <!-- Type filter -->
+            <div class="filter-tabs" id="finTypeFilterTabs">
+              <button class="filter-tab active" data-type="all" onclick="setFinTypeFilter(this,'all')">الكل</button>
+              <button class="filter-tab" data-type="income" onclick="setFinTypeFilter(this,'income')">الدخل</button>
+              <button class="filter-tab" data-type="expense" onclick="setFinTypeFilter(this,'expense')">المصروفات</button>
+            </div>
+
+            <!-- Time filter -->
+            <select class="form-select" id="finTimeFilter" onchange="filterTransactions()" style="width: auto; padding: 6px 12px; font-size: 13px;">
+              <option value="this_month">هذا الشهر</option>
+              <option value="last_month">الشهر الماضي</option>
+              <option value="last_3_months">آخر 3 شهور</option>
+              <option value="all" selected>كل الأوقات</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="table-container">
+          <div class="table-responsive">
+            <table class="fin-table">
+              <thead>
+                <tr>
+                  <th>التاريخ</th>
+                  <th>النوع</th>
+                  <th>السبب</th>
+                  <th>التصنيف</th>
+                  <th style="text-align: right;">المبلغ</th>
+                  <th style="text-align: center; width: 100px;">إجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="transactionsTbody">
+                <!-- Dynamically injected -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
     </main>
   </div>
 </div>
 
-<!-- Add/Edit Modal -->
+<!-- Project Modal -->
 <div class="modal-backdrop" id="projectModal" onclick="handleBackdropClick(event)">
   <div class="modal">
     <div class="modal-header">
@@ -813,7 +1064,7 @@
   </div>
 </div>
 
-<!-- Delete Confirm Modal -->
+<!-- Delete Project Confirm Modal -->
 <div class="modal-backdrop" id="deleteModal" onclick="handleBackdropClick(event)">
   <div class="modal confirm-modal">
     <div class="confirm-icon">
@@ -826,6 +1077,83 @@
       <button class="btn-danger" id="confirmDeleteBtn" onclick="confirmDelete()">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
         Yes, Delete
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Transaction Modal (Add / Edit) -->
+<div class="modal-backdrop" id="transactionModal" onclick="handleBackdropClick(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title" id="txModalTitle">+ إضافة عملية مالية</h3>
+      <button class="modal-close" onclick="closeModal('transactionModal')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div>
+      <input type="hidden" id="txEditId">
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">النوع *</label>
+          <select class="form-select" id="txType" onchange="updateTxCategoryOptions()">
+            <option value="income">💰 دخل (Income)</option>
+            <option value="expense">💸 مصروف (Expense)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">المبلغ (EGP) *</label>
+          <input class="form-input" id="txAmount" type="number" min="0" step="0.01" placeholder="1000">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">التاريخ *</label>
+          <input class="form-input" id="txDate" type="date">
+        </div>
+        <div class="form-group">
+          <label class="form-label">التصنيف *</label>
+          <select class="form-select" id="txCategory">
+            <!-- Dynamically populated -->
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">السبب / الوصف *</label>
+        <input class="form-input" id="txReason" type="text" placeholder="مثال: Portfolio عميل / Content Strategy">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">ملاحظات (اختياري)</label>
+        <textarea class="form-textarea" id="txNotes" placeholder="أي تفاصيل إضافية..."></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-secondary" onclick="closeModal('transactionModal')">إلغاء</button>
+        <button class="btn-primary" id="txSaveBtn" onclick="saveTransaction()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          حفظ العملية
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Transaction Confirm Modal -->
+<div class="modal-backdrop" id="deleteTxModal" onclick="handleBackdropClick(event)">
+  <div class="modal confirm-modal">
+    <div class="confirm-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+    </div>
+    <div class="confirm-title">حذف العملية المالية؟</div>
+    <p class="confirm-text" id="deleteTxConfirmText">سيتم حذف هذه العملية بشكل نهائي من السجل المالي.</p>
+    <div class="confirm-actions">
+      <button class="btn-secondary" onclick="closeModal('deleteTxModal')">إلغاء</button>
+      <button class="btn-danger" id="confirmDeleteTxBtn" onclick="confirmDeleteTransaction()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+        نعم، احذف
       </button>
     </div>
   </div>
@@ -847,10 +1175,28 @@
   };
 
   // ===== State =====
+  let currentView = 'projects'; // 'projects' | 'finance'
   let allProjects = [];
   let currentFilter = 'all';
   let deleteTargetId = null;
   let editMode = false;
+
+  // Finance State
+  let allTransactions = [];
+  let currentFinTypeFilter = 'all'; // 'all' | 'income' | 'expense'
+  let deleteTxTargetId = null;
+  let txEditMode = false;
+
+  // Income & Expense Categories
+  const incomeCategories = ['Portfolio', 'خدمة أخرى', 'عميل', 'أخرى'];
+  const expenseCategories = ['Content', 'Design', 'Ads', 'Tools', 'Hosting / Domain', 'Operations', 'Other'];
+
+  // Default seed transactions
+  const defaultTransactions = [
+    { id: 'tx-101', date: '2026-08-20', type: 'income', reason: 'Portfolio عميل', category: 'Portfolio', amount: 1000, notes: 'مبيعات بنظام البورتفوليو' },
+    { id: 'tx-102', date: '2026-08-20', type: 'expense', reason: 'Content Strategy', category: 'Content', amount: 1500, notes: 'إعداد خطة المحتوى' },
+    { id: 'tx-103', date: '2026-08-21', type: 'expense', reason: 'دومين', category: 'Hosting / Domain', amount: 300, notes: 'تجديد نطاق PortfolioHub' }
+  ];
 
   // ===== Theme =====
   function initTheme() {
@@ -867,12 +1213,46 @@
   });
   initTheme();
 
-  // ===== View =====
-  function setView(v) {}
+  // ===== View Switcher =====
+  function setView(v) {
+    currentView = v;
+    document.getElementById('navProjects').classList.toggle('active', v === 'projects');
+    document.getElementById('navFinance').classList.toggle('active', v === 'finance');
 
-  // ===== Filter =====
+    document.getElementById('projectsView').style.display = v === 'projects' ? 'block' : 'none';
+    document.getElementById('financeView').style.display = v === 'finance' ? 'block' : 'none';
+
+    if (v === 'projects') {
+      document.getElementById('topbarTitle').textContent = 'Projects';
+      document.getElementById('topbarAddText').textContent = 'Add Project';
+      document.getElementById('searchInput').placeholder = 'Search projects…';
+    } else {
+      document.getElementById('topbarTitle').textContent = 'Financial Overview / السجل المالي';
+      document.getElementById('topbarAddText').textContent = 'إضافة عملية';
+      document.getElementById('searchInput').placeholder = 'بحث في العمليات…';
+      renderTransactions();
+    }
+  }
+
+  function handleTopbarAdd() {
+    if (currentView === 'projects') {
+      openAddModal();
+    } else {
+      openAddTransactionModal();
+    }
+  }
+
+  function handleSearch() {
+    if (currentView === 'projects') {
+      filterProjects();
+    } else {
+      filterTransactions();
+    }
+  }
+
+  // ===== Projects Logic =====
   function setFilter(btn, filter) {
-    document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#projectsView .filter-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentFilter = filter;
     renderProjects();
@@ -880,7 +1260,6 @@
 
   function filterProjects() { renderProjects(); }
 
-  // ===== Fetch projects =====
   async function loadProjects() {
     try {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/projects?select=*&order=created_at.desc`, { headers });
@@ -909,7 +1288,7 @@
     const search = document.getElementById('searchInput').value.toLowerCase();
     let filtered = allProjects;
     if (currentFilter !== 'all') filtered = filtered.filter(p => p.category === currentFilter);
-    if (search) filtered = filtered.filter(p =>
+    if (search && currentView === 'projects') filtered = filtered.filter(p =>
       p.title.toLowerCase().includes(search) || p.description.toLowerCase().includes(search)
     );
 
@@ -949,7 +1328,6 @@
     `).join('');
   }
 
-  // ===== Add Modal =====
   function openAddModal() {
     editMode = false;
     document.getElementById('modalTitle').textContent = 'Add New Project';
@@ -970,7 +1348,6 @@
     document.getElementById('fieldCategory').value = p.category;
     document.getElementById('fieldUrl').value = p.url;
     document.getElementById('fieldImage').value = p.image_url;
-    // Show existing image as preview
     resetUpload();
     if (p.image_url) {
       document.getElementById('fieldImage').value = p.image_url;
@@ -979,9 +1356,7 @@
     openModal('projectModal');
   }
 
-  // ===== Image Upload =====
   let pendingFile = null;
-
   function handleFileSelect(e) {
     const file = e.target.files[0];
     if (!file) return;
@@ -1037,11 +1412,9 @@
 
     document.getElementById('uploadBar').style.width = '100%';
     document.getElementById('uploadStatus').textContent = 'Upload complete!';
-    const publicUrl = `${SUPABASE_URL}/storage/v1/object/public/projects/${fileName}`;
-    return publicUrl;
+    return `${SUPABASE_URL}/storage/v1/object/public/projects/${fileName}`;
   }
 
-  // Drag & drop
   const uploadArea = document.getElementById('uploadArea');
   uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
   uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
@@ -1084,7 +1457,6 @@
     btn.style.opacity = '0.6';
 
     try {
-      // Upload new image if selected
       if (pendingFile) {
         image_url = await uploadImageToSupabase(pendingFile);
       }
@@ -1119,7 +1491,6 @@
     }
   }
 
-  // ===== Delete =====
   function openDeleteModal(id, name) {
     deleteTargetId = id;
     document.getElementById('deleteConfirmText').textContent = `"${name}" will be permanently removed from your portfolio.`;
@@ -1146,6 +1517,347 @@
       btn.disabled = false;
       btn.style.opacity = '1';
       deleteTargetId = null;
+    }
+  }
+
+
+  // ================= FINANCE LOGIC =================
+
+  async function loadTransactions() {
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/transactions?select=*&order=date.desc,created_at.desc`, { headers });
+      if (res.ok) {
+        allTransactions = await res.json();
+        localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
+      } else {
+        throw new Error('Supabase table not found or query error');
+      }
+    } catch (e) {
+      const saved = localStorage.getItem('phub_transactions');
+      if (saved) {
+        try {
+          allTransactions = JSON.parse(saved);
+        } catch (err) {
+          allTransactions = [...defaultTransactions];
+        }
+      } else {
+        allTransactions = [...defaultTransactions];
+        localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
+      }
+    }
+    updateFinanceStats();
+    if (currentView === 'finance') renderTransactions();
+  }
+
+  function persistTransactions() {
+    localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
+    updateFinanceStats();
+  }
+
+  function updateFinanceStats() {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth(); // 0-indexed
+
+    let totalIncome = 0;
+    let totalExpense = 0;
+    let monthIncome = 0;
+    let monthExpense = 0;
+
+    const monthNamesAr = [
+      'يناير', 'فبراير', 'مارس', 'أبريل', 'مايو', 'يونيو',
+      'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+    ];
+    document.getElementById('finCurrentMonthLabel').textContent = `${monthNamesAr[currentMonth]} ${currentYear}`;
+
+    allTransactions.forEach(t => {
+      const amt = parseFloat(t.amount) || 0;
+      const tDate = new Date(t.date);
+
+      if (t.type === 'income') {
+        totalIncome += amt;
+        if (tDate.getFullYear() === currentYear && tDate.getMonth() === currentMonth) {
+          monthIncome += amt;
+        }
+      } else if (t.type === 'expense') {
+        totalExpense += amt;
+        if (tDate.getFullYear() === currentYear && tDate.getMonth() === currentMonth) {
+          monthExpense += amt;
+        }
+      }
+    });
+
+    const netProfit = totalIncome - totalExpense;
+    const brandBalance = netProfit;
+    const monthNet = monthIncome - monthExpense;
+
+    document.getElementById('finTotalIncome').textContent = formatCurrency(totalIncome);
+    document.getElementById('finTotalExpenses').textContent = formatCurrency(totalExpense);
+    document.getElementById('finNetProfit').textContent = formatCurrency(netProfit);
+    document.getElementById('finBrandBalance').textContent = formatCurrency(brandBalance);
+
+    document.getElementById('finMonthIncome').textContent = formatCurrency(monthIncome);
+    document.getElementById('finMonthExpense').textContent = formatCurrency(monthExpense);
+
+    const monthNetEl = document.getElementById('finMonthNet');
+    monthNetEl.textContent = (monthNet >= 0 ? '+' : '') + formatCurrency(monthNet);
+    monthNetEl.style.color = monthNet >= 0 ? 'var(--success)' : 'var(--danger)';
+  }
+
+  function formatCurrency(val) {
+    return new Intl.NumberFormat('en-US', { maximumFractionDigits: 2 }).format(val) + ' EGP';
+  }
+
+  function setFinTypeFilter(btn, type) {
+    document.querySelectorAll('#finTypeFilterTabs .filter-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFinTypeFilter = type;
+    renderTransactions();
+  }
+
+  function filterTransactions() { renderTransactions(); }
+
+  function renderTransactions() {
+    updateFinanceStats();
+
+    const search = document.getElementById('searchInput').value.toLowerCase().trim();
+    const timeFilter = document.getElementById('finTimeFilter').value;
+    const now = new Date();
+
+    let filtered = [...allTransactions];
+
+    // 1. Type Filter
+    if (currentFinTypeFilter !== 'all') {
+      filtered = filtered.filter(t => t.type === currentFinTypeFilter);
+    }
+
+    // 2. Time Filter
+    if (timeFilter === 'this_month') {
+      filtered = filtered.filter(t => {
+        const d = new Date(t.date);
+        return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+      });
+    } else if (timeFilter === 'last_month') {
+      const lastMonthDate = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+      filtered = filtered.filter(t => {
+        const d = new Date(t.date);
+        return d.getFullYear() === lastMonthDate.getFullYear() && d.getMonth() === lastMonthDate.getMonth();
+      });
+    } else if (timeFilter === 'last_3_months') {
+      const threeMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 2, 1);
+      filtered = filtered.filter(t => {
+        const d = new Date(t.date);
+        return d >= threeMonthsAgo;
+      });
+    }
+
+    // 3. Search Filter
+    if (search && currentView === 'finance') {
+      filtered = filtered.filter(t =>
+        (t.reason && t.reason.toLowerCase().includes(search)) ||
+        (t.category && t.category.toLowerCase().includes(search)) ||
+        (t.notes && t.notes.toLowerCase().includes(search))
+      );
+    }
+
+    // Sort by Date Descending
+    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    const tbody = document.getElementById('transactionsTbody');
+    if (filtered.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="6" style="text-align: center; padding: 48px; color: var(--ink-muted);">
+             لا توجد عمليات مالية مطابقة. اضغط على "+ إضافة عملية" لإنشاء أول سجل!
+          </td>
+        </tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(t => {
+      const formattedDate = formatDateDisplay(t.date);
+      const isIncome = t.type === 'income';
+      const amountSign = isIncome ? '+' : '-';
+      const formattedAmount = `${amountSign}${formatCurrency(t.amount)}`;
+
+      return `
+        <tr>
+          <td style="font-weight: 500;">${formattedDate}</td>
+          <td>
+            <span class="type-badge ${t.type}">
+              ${isIncome ? '💰 دخل' : '💸 مصروف'}
+            </span>
+          </td>
+          <td>
+            <div style="font-weight:600; color:var(--ink);">${escapeHtml(t.reason)}</div>
+            ${t.notes ? `<div style="font-size:12px; color:var(--ink-muted); margin-top:2px;">${escapeHtml(t.notes)}</div>` : ''}
+          </td>
+          <td>
+            <span class="category-tag">${escapeHtml(t.category)}</span>
+          </td>
+          <td style="text-align: right;">
+            <span class="amount-cell ${t.type}">${formattedAmount}</span>
+          </td>
+          <td style="text-align: center;">
+            <div style="display:flex; gap:6px; justify-content:center;">
+              <button class="btn-edit" onclick="openEditTransactionModal('${t.id}')" title="تعديل">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+              </button>
+              <button class="btn-danger" onclick="openDeleteTransactionModal('${t.id}')" title="حذف">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>
+              </button>
+            </div>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function formatDateDisplay(dateStr) {
+    if (!dateStr) return '';
+    const parts = dateStr.split('-');
+    if (parts.length === 3) {
+      return `${parts[2]}/${parts[1]}/${parts[0]}`; // DD/MM/YYYY
+    }
+    return dateStr;
+  }
+
+  function updateTxCategoryOptions(selectedCategory = '') {
+    const type = document.getElementById('txType').value;
+    const catSelect = document.getElementById('txCategory');
+    const categories = type === 'income' ? incomeCategories : expenseCategories;
+
+    catSelect.innerHTML = categories.map(c => `<option value="${c}" ${c === selectedCategory ? 'selected' : ''}>${c}</option>`).join('');
+  }
+
+  function openAddTransactionModal() {
+    txEditMode = false;
+    document.getElementById('txEditId').value = '';
+    document.getElementById('txModalTitle').textContent = '+ إضافة عملية مالية';
+    document.getElementById('txType').value = 'income';
+    document.getElementById('txAmount').value = '';
+    document.getElementById('txDate').value = new Date().toISOString().split('T')[0];
+    document.getElementById('txReason').value = '';
+    document.getElementById('txNotes').value = '';
+    updateTxCategoryOptions();
+    openModal('transactionModal');
+  }
+
+  function openEditTransactionModal(id) {
+    const t = allTransactions.find(x => String(x.id) === String(id));
+    if (!t) return;
+    txEditMode = true;
+    document.getElementById('txEditId').value = id;
+    document.getElementById('txModalTitle').textContent = 'تعديل عملية مالية';
+    document.getElementById('txType').value = t.type;
+    document.getElementById('txAmount').value = t.amount;
+    document.getElementById('txDate').value = t.date;
+    document.getElementById('txReason').value = t.reason;
+    document.getElementById('txNotes').value = t.notes || '';
+    updateTxCategoryOptions(t.category);
+    openModal('transactionModal');
+  }
+
+  async function saveTransaction() {
+    const type = document.getElementById('txType').value;
+    const amount = parseFloat(document.getElementById('txAmount').value);
+    const date = document.getElementById('txDate').value;
+    const category = document.getElementById('txCategory').value;
+    const reason = document.getElementById('txReason').value.trim();
+    const notes = document.getElementById('txNotes').value.trim();
+
+    if (isNaN(amount) || amount <= 0) {
+      showToast('يرجى إدخال مبلغ صحيح.', 'error');
+      return;
+    }
+    if (!date) {
+      showToast('يرجى اختيار التاريخ.', 'error');
+      return;
+    }
+    if (!reason) {
+      showToast('يرجى إدخال السبب/الوصف.', 'error');
+      return;
+    }
+
+    const btn = document.getElementById('txSaveBtn');
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+
+    const payload = { type, amount, date, category, reason, notes };
+
+    try {
+      if (txEditMode) {
+        const id = document.getElementById('txEditId').value;
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/transactions?id=eq.${id}`, {
+          method: 'PATCH',
+          headers,
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error(await res.text());
+        showToast('تم تحديث العملية بنجاح!', 'success');
+      } else {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/transactions`, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error(await res.text());
+        showToast('تمت إضافة العملية بنجاح!', 'success');
+      }
+      closeModal('transactionModal');
+      await loadTransactions();
+    } catch (e) {
+      // Local fallback
+      if (txEditMode) {
+        const id = document.getElementById('txEditId').value;
+        const idx = allTransactions.findIndex(x => String(x.id) === String(id));
+        if (idx !== -1) {
+          allTransactions[idx] = { id, ...payload };
+        }
+      } else {
+        allTransactions.unshift({ id: 'tx-' + Date.now(), ...payload });
+      }
+      localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
+      showToast('تم الحفظ بنجاح!', 'success');
+      closeModal('transactionModal');
+      renderTransactions();
+    } finally {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+    }
+  }
+
+  function openDeleteTransactionModal(id) {
+    deleteTxTargetId = id;
+    const t = allTransactions.find(x => String(x.id) === String(id));
+    const name = t ? t.reason : '';
+    document.getElementById('deleteTxConfirmText').textContent = `هل أنت تأكد من حذف العملية "${name}"؟`;
+    openModal('deleteTxModal');
+  }
+
+  async function confirmDeleteTransaction() {
+    if (!deleteTxTargetId) return;
+    const btn = document.getElementById('confirmDeleteTxBtn');
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/transactions?id=eq.${deleteTxTargetId}`, {
+        method: 'DELETE',
+        headers
+      });
+      if (!res.ok) throw new Error(await res.text());
+      showToast('تم حذف العملية بنجاح.', 'success');
+    } catch (e) {
+      allTransactions = allTransactions.filter(x => String(x.id) !== String(deleteTxTargetId));
+      localStorage.setItem('phub_transactions', JSON.stringify(allTransactions));
+      showToast('تم حذف العملية بنجاح.', 'success');
+    } finally {
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      deleteTxTargetId = null;
+      closeModal('deleteTxModal');
+      await loadTransactions();
     }
   }
 
@@ -1177,11 +1889,12 @@
 
   // ===== Utils =====
   function escapeHtml(str) {
-    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
   }
 
   // ===== Init =====
   loadProjects();
+  loadTransactions();
 </script>
 </body>
 </html>
